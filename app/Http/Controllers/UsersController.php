@@ -26,8 +26,10 @@ class UsersController extends Controller
     }
     public function show(User $user)
     {
-//        compact 是将user model转化为一个关联数组，然后跟视图绑定
-        return view('users/show',compact('user'));
+        $statuses = $user->statuses()
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        return view('users.show', compact('user', 'statuses'));
     }
     public function store(Request $request)
     {
